@@ -1,0 +1,38 @@
+---
+title: "Discussion 4 Rmd tips"
+author: "Roshni Katrak-Adefowora"
+date: "1/26/2021"
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Good evening. Is this available?
+
+## Yes it is.
+
+### Please leave me alone we are sleeping.
+
+#### ?
+
+```{r}
+# Hi, here's my code!
+
+Roshni <- 2+5
+plot(mtcars)
+```
+
+
+##### No more contacting please. Thanks. Appreciate.
+
+###### You contacted me.
+
+###### I know I'm no longer interested. Please stop contacting me now I will contact attorney general if you do not stop. Thsnks.
