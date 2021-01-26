@@ -1,0 +1,67 @@
+---
+title: "Discussion 1"
+author: "Roshni Katrak-Adefowora"
+date: "1/26/2021"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(janitor)
+library(tsibble)
+library(feasts)
+```
+
+```{r}
+truckee <- read_csv("truckee_river.csv", skip=29) %>% 
+  slice(-1) %>%  #get rid of first row
+  select(datetime, discharge_cfs) %>% 
+  mutate(date = mdy(datetime),
+         discharge_cfs = as.numeric(discharge_cfs))
+
+truckee_ts <- truckee %>% 
+  as_tsibble(key = NULL, index = date)
+
+truckee_ts %>% 
+  gg_season(discharge_cfs)
+
+ggplot(data=truckee_ts, aes(x=date, y=discharge_cfs))+
+  geom_line()
+```
+
+Interactive graph!
+```{r, echo = FALSE}
+inputPanel(
+  dateRangeInput(inputId = "dates",
+                 label = "Select date range:",
+                 min = "2010-01-01",
+                 max = "2021-01-24",
+                 start = "2010-01-01",
+                 end = "2021-01-24",
+                 format = "yyyy-mm-dd")
+)
+
+
+#create reactive timeseries
+#stored as single vector with two elements (start date is first and end date is second)
+
+truckee_react <- reactive({
+  
+  truckee_ts %>% 
+    filter(date >= input$dates[1], 
+           date <= input$dates[2])
+  
+})
+
+#create reactive graph
+renderPlot({
+  
+  ggplot(data=truckee_react(), aes(x=date, y=discharge_cfs))+
+    geom_line()
+  
+})
+```
+
